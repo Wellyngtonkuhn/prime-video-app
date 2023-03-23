@@ -1,6 +1,11 @@
 import { useQuery } from "react-query";
 
-import { FlatList, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import {
   DestaquesContainer,
   ImageDestaque,
@@ -13,16 +18,17 @@ import {
 } from "./style";
 import { api } from "../../axiosConfig/api";
 
+import FeatureMovieTV from "../../components/Features";
+
 type Data = {
-  id: Number;
-  original_title: String;
-  backdrop_path: String;
-  poster_path: String;
+  id: number;
+  original_title: string;
+  poster_path: string;
 };
 
 export default function Home() {
-  const { data, isLoading } = useQuery(["movie/now_playing"], async () => {
-    const response = await api.get("movie/now_playing");
+  const { data, isLoading } = useQuery<Data[]>(["movie/top_rated"], async () => {
+    const response = await api.get("movie/top_rated");
     return response.data.results;
   });
 
@@ -36,31 +42,31 @@ export default function Home() {
       <MenuContainer>
         <ScrollView horizontal>
           <TouchableOpacity>
-            <MenuTitle>Página inicial</MenuTitle>
+            <MenuTitle>Home</MenuTitle>
           </TouchableOpacity>
           <TouchableOpacity>
-            <MenuTitle>Originais</MenuTitle>
+            <MenuTitle>Originals</MenuTitle>
           </TouchableOpacity>
           <TouchableOpacity>
-            <MenuTitle>Séries</MenuTitle>
+            <MenuTitle>TV</MenuTitle>
           </TouchableOpacity>
           <TouchableOpacity>
-            <MenuTitle>Filmes</MenuTitle>
+            <MenuTitle>Movies</MenuTitle>
           </TouchableOpacity>
           <TouchableOpacity>
-            <MenuTitle>Infantil</MenuTitle>
+            <MenuTitle>Kids</MenuTitle>
           </TouchableOpacity>
         </ScrollView>
       </MenuContainer>
 
       <DestaquesContainer>
-        {isLoading && <ActivityIndicator size="large" color="#00b9e7" /> }
+        {isLoading && <ActivityIndicator size="large" color="#00b9e7" />}
         <FlatList
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
           onEndReachedThreshold={5}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.poster_path}
           renderItem={({ item }) => (
             <TouchableOpacity>
               <ImageDestaque
@@ -74,8 +80,27 @@ export default function Home() {
         />
       </DestaquesContainer>
 
+      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
+
+      <FeatureMovieTV title='Amazon TV' params='tv/popular' />
+
+      <FeatureMovieTV title='Amazon Movies' params='movie/popular' />
+
+      <FeatureMovieTV title='Action' params='discover/movie?&sort_by=popularity.desc&include_adult=false&include_video=true&page=1&with_genres=action' />
+
+      <FeatureMovieTV title='Adventure' params='discover/tv?&include_adult=false&include_video=true&page=1&with_genres=Adventure' />
+
+      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
+
+      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
+
+      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
+
+
+
 
       
+
     </StyledView>
   );
 }
