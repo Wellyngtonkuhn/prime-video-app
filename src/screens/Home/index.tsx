@@ -27,7 +27,7 @@ type Data = {
 };
 
 export default function Home() {
-  const { data, isLoading } = useQuery<Data[]>(["movie/top_rated"], async () => {
+  const { data, isLoading } = useQuery<Data[]>(["/movie/top_rated"], async () => {
     const response = await api.get("movie/top_rated");
     return response.data.results;
   });
@@ -80,26 +80,12 @@ export default function Home() {
         />
       </DestaquesContainer>
 
-      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
+      <FeatureMovieTV title='Amazon Originals' params='/movie/upcoming' />
 
-      <FeatureMovieTV title='Amazon TV' params='tv/popular' />
+      <FeatureMovieTV title='Amazon TV' params='/tv/popular' />
 
-      <FeatureMovieTV title='Amazon Movies' params='movie/popular' />
-
-      <FeatureMovieTV title='Action' params='discover/movie?&sort_by=popularity.desc&include_adult=false&include_video=true&page=1&with_genres=action' />
-
-      <FeatureMovieTV title='Adventure' params='discover/tv?&include_adult=false&include_video=true&page=1&with_genres=Adventure' />
-
-      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
-
-      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
-
-      <FeatureMovieTV title='Amazon Originals' params='movie/now_playing' />
-
-
-
-
-      
+      <FeatureMovieTV title='Top Rated' params='/tv/top_rated' />
+    
 
     </StyledView>
   );
